@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+{% load static %}
+{% block user%}
+    <ul class="top_nav_menu">
+        <li class="account">
+            <a href="#">
+                <i class="fa-solid fa-user"></i> {{ username }} <i class="fa fa-angle-down"></i>
+            </a>
+            <ul class="account_selection">
+                <li><a href="#"><i class="fa-solid fa-money-bill-1"></i> Số Dư: {{ money }} vnđ</a></li>
+                <li><a href="{% url 'change-info' %}"><i class="fa-solid fa-key"></i> Thông Tin Tài Khoản</a></li>
+                <li><a href="{% url 'user-logout' %}"><i class="fa-solid fa-arrow-right-from-bracket"></i> Đăng Xuất</a></li>
+            </ul>
+        </li>
+    </ul>
+{% endblock user%}
+
+{% block addshop %}
+    <ul class="navbar_user">
+        {% if user.is_superuser %}
+            <li><a href="#"><i class="fa-solid fa-plus"></i></a></li>
+        {% endif %}
+        <li class="checkout">
+            <a href="#">
+                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                <span id="checkout_items" class="checkout_items">2</span>
+            </a>
+        </li>
+    </ul>
+{% endblock addshop%}
+
+{% block slide %}
+<div class="main_slider" style="background-image:url(/static/images/slider_1.jpg)">
+    <div class="container fill_height">
+        <div class="row align-items-center fill_height">
+            <div class="col">
+                <div class="main_slider_content">
+                    <h6>Spring / Summer Collection 2017</h6>
+                    <h1>Shop Acc FO4 Uy Tín, Giá Rẻ!</h1>
+                    <div class="red_button shop_now_button"><a href="#newacc">MUA NGAY</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block price %}
+<div class="banner">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="banner_item align-items-center" style="background-image:url(/static/images/banner_1.jpg)">
+                    <div class="banner_category">
+                        <a href="categories.html">GIÁ 100K -> 500K</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="banner_item align-items-center" style="background-image:url(/static/images/banner_2.jpg)">
+                    <div class="banner_category">
+                        <a href="categories.html">GIÁ 500K -> 1000K</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="banner_item align-items-center" style="background-image:url(/static/images/banner_3.jpg)">
+                    <div class="banner_category">
+                        <a href="categories.html">GIÁ 1000K -> 5000K</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="banner_item align-items-center" style="background-image:url(/static/images/banner_4.jpg)">
+                    <div class="banner_category">
+                        <a href="categories.html">GIÁ TRÊN 5000K</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock price %}
+
+{% block newproduct%}
+<div class="best_sellers">
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                <div class="section_title new_arrivals_title">
+                    <h2 id="newacc" >Tài Khoản Mới</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="product_slider_container">
+                    <div class="owl-carousel owl-theme product_slider">
+                    {% for item in newacc%}
+                        <div class="owl-item product_slider_item">
+                            <div class="product-item">
+                                <div class="product discount">
+                                    <div class="product_image">
+                                        <img src="{{ item.image.url }}" alt="">
+                                    </div>
+                                    <div class="favorite favorite_left"></div>
+                                    <div class="product_info">
+                                        <h6 class="product_name" style="color: #666666;font-size: 15px;font-weight: normal;">{{ item.description }}</h6>
+                                    </div>
+                                    <div class="product_info">
+                                        <h6 class="product_name">{{ item.name }}</h6>
+                                        <div class="product_price">{{ item.price }}<span>{{ item.sale }}</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock newproduct%}
+
+{% block product%}
+<div class="new_arrivals">
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                <div class="section_title new_arrivals_title">
+                    <h2>Tất Cả Tài Khoản</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="product-grid" data-isotope='{ "itemSelector": ".product-item", "layoutMode": "fitRows" }'>
+                    {% for item in allacc%}
+                        <div class="product-item men">
+                            <div class="product discount product_filter">
+                                <div class="product_image">
+                                    <img src="{{ item.image.url }}" alt="">
+                                </div>
+                                <div class="favorite favorite_left"></div>
+                                <div class="product_info">
+                                    <h6 class="product_name" style="color: #666666;font-size: 15px;font-weight: normal;">{{ item.description }}</h6>
+                                </div>
+                                <div class="product_info">
+                                    <h6 class="product_name"><a href="single.html">{{ item.name }}</a></h6>
+                                    <div class="product_price">{{item.price}} vnd<span>{{ item.sale }} vnd</span></div>
+                                </div>
+                            </div>
+                            <div class="red_button add_to_cart_button"><a href="#">Mua Ngay</a></div>
+                        </div>
+                    {% endfor%}       
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock product%}
+
