@@ -1,8 +1,8 @@
-{% load static %}
+{% load static%}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>{% block title%}{% endblock title %}</title>
+<title>Fo4Shop.com - {{ acc.name }}</title>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="description" content="Colo Shop Template">
@@ -13,8 +13,10 @@
 <link rel="stylesheet" type="text/css" href="{% static 'plugins/OwlCarousel2-2.2.1/owl.carousel.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'plugins/OwlCarousel2-2.2.1/owl.theme.default.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'plugins/OwlCarousel2-2.2.1/animate.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static 'styles/main_styles.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static 'styles/responsive.css' %}">
+<link rel="stylesheet" href="{% static 'plugins/themify-icons/themify-icons.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/jquery-ui-1.12.1.custom/jquery-ui.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'styles/single_styles.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'styles/single_responsive.css' %}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 </head>
 
@@ -37,6 +39,33 @@
 					<div class="col-md-6 text-right">
 						<div class="top_nav_right">
 							{% block user %}
+                            {% if login == True %}
+                                <ul class="top_nav_menu">
+                                    <li class="account">
+                                        <a href="#">
+                                            <i class="fa-solid fa-user"></i> {{ username }} <i class="fa fa-angle-down"></i>
+                                        </a>
+                                        <ul class="account_selection">
+                                            <li><a href="#"><i class="fa-solid fa-money-bill-1"></i> Số Dư: {{ money }} vnđ</a></li>
+                                            <li><a href="{% url 'change-info' %}"><i class="fa-solid fa-key"></i> Thông Tin Tài Khoản</a></li>
+                                            <li><a href="{% url 'user-logout' %}"><i class="fa-solid fa-arrow-right-from-bracket"></i> Đăng Xuất</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            {% else %}
+                                <ul class="top_nav_menu">
+                                    <li class="account">
+                                        <a href="#">
+                                            Tài Khoản Cá Nhân
+                                            <i class="fa fa-angle-down"></i>
+                                        </a>
+                                        <ul class="account_selection">
+                                            <li><a href="{% url 'user-login' %}"><i class="fa fa-sign-in" aria-hidden="true"></i>Đăng Nhập</a></li>
+                                            <li><a href="{% url 'user-sigup' %}"><i class="fa fa-user-plus" aria-hidden="true"></i>Đăng Ký</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            {% endif %}
 							{% endblock user %}
 						</div>
 					</div>
@@ -59,8 +88,19 @@
 								<li><a href="#"><i class="fa-solid fa-address-card"></i> Liên Hệ</a></li>
 								<li><a href="#"><i class="fa-solid fa-money-bill-1"></i> Nạp Tiền</a></li>
 							</ul>
-							{% block addshop%}
-							{% endblock addshop%}
+                            <ul class="navbar_user">
+                                {% if user.is_superuser %}
+                                    <li><a href="#"><i class="fa-solid fa-plus"></i></a></li>
+                                {% endif %}
+                                {% if login == True %}
+                                    <li class="checkout">
+                                        <a href="#">
+                                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                            <span id="checkout_items" class="checkout_items">2</span>
+                                        </a>
+                                    </li>
+                                {% endif %}        
+                            </ul>
 							<div class="hamburger_container">
 								<i class="fa fa-bars" aria-hidden="true"></i>
 							</div>
@@ -73,6 +113,9 @@
 	</header>
 
 	<div class="fs_menu_overlay"></div>
+
+	<!-- Hamburger Menu -->
+
 	<div class="hamburger_menu">
 		<div class="hamburger_close"><i class="fa fa-times" aria-hidden="true"></i></div>
 		<div class="hamburger_menu_content text-right">
@@ -121,23 +164,83 @@
 		</div>
 	</div>
 
-	<!-- Slider -->
+	<div class="container single_product_container">
+		<div class="row">
+			<div class="col">
 
-    {% block slide %}
-    {% endblock slide %}
-	
-	{% block login-sigup%}
-	{% endblock login-sigup%}
+				<!-- Breadcrumbs -->
 
-    {% block price %}
-    {% endblock price %}
-	
+				<div class="breadcrumbs d-flex flex-row align-items-center">
+					<ul>
+						<li><a href="{% url 'index' %}">Trang Chủ</a></li>
+						<li><a href="categories.html"><i class="fa fa-angle-right" aria-hidden="true"></i>Men's</a></li>
+						<li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>{{ acc.name }}</a></li>
+					</ul>
+				</div>
 
-	{% block newproduct%}
-	{% endblock newproduct%}
+			</div>
+		</div>
 
-	{% block product%}
-	{% endblock product%}
+		<div class="row" style="margin-top: -50px; margin-bottom: -60px;">
+			<div class="col-lg-12">
+                <div class="product_details" style="padding-bottom: 25px; margin-bottom: 25px; border-bottom: 1px solid #efefef;">
+					<div class="product_details_title">
+						<h2 style="color: #fe4c50; text-decoration: underline;">{{ acc.name }}</h2>
+						<p>{{ acc.description }}</p>
+					</div>
+					<div class="original_price">{{ acc.sale }} vnđ</div>
+					<div class="product_price">Giá: {{ acc.price }} vnđ</div>
+					<ul class="star_rating">
+						<li><i class="fa fa-star" aria-hidden="true"></i></li>
+						<li><i class="fa fa-star" aria-hidden="true"></i></li>
+						<li><i class="fa fa-star" aria-hidden="true"></i></li>
+						<li><i class="fa fa-star" aria-hidden="true"></i></li>
+						<li><i class="fa fa-star-o" aria-hidden="true"></i></li>
+					</ul>
+					<div class="product_color">
+						<span>Loại Tài Khoản: Dưới 500K</span>
+					</div>
+					<div class="quantity d-flex flex-column flex-sm-row align-items-sm-center">
+                        <span style="padding-left: 11px; padding-top: 8px; height: 42px; width: 100px; border: 1px solid #e5e5e5;">Số Lượng: 1</span>
+						<div class="red_button add_to_cart_button"><a href="#">add to cart</a></div>
+						<div class="product_favorite d-flex flex-column align-items-center justify-content-center"></div>
+					</div>
+				</div>
+				<div class="single_product_pics">
+					<div class="row">
+						<div class="col-lg-2 thumbnails_col order-lg-1 order-2" style="margin-top: 9px;">
+							<div class="single_product_thumbnails">
+								<ul>
+									<li><img src="{{ acc.image.url }}" alt="" data-image="{{ acc.image.url }}"></li>
+                                    {% if acc.image1 %}
+                                        <li class="active"><img src="{{ acc.image1.url }}" alt="" data-image="{{ acc.image1.url }}"></li>
+                                    {% endif %}
+									{% if acc.image2 %}
+                                        <li><img src="{{ acc.image2.url }}" alt="" data-image="{{ acc.image2.url }}"></li>
+                                    {% endif %}
+									{% if acc.image3 %}
+                                        <li><img src="{{ acc.image3.url }}" alt="" data-image="{{ acc.image3.url }}"></li>
+                                    {% endif %}
+								</ul>
+							</div>
+						</div>
+						<div class="col-lg-10 image_col order-lg-2 order-1">
+							<div class="single_product_image">
+								<div class="single_product_image_background" style="background-image:url({{ acc.image.url }})"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+        
+	</div>
+
+	<!-- Tabs -->
+
+
+	<!-- Benefit -->
 
 	<div class="benefit">
 		<div class="container">
@@ -182,11 +285,6 @@
 		</div>
 	</div>
 
-	<!-- Newsletter -->
-
-
-	<!-- Footer -->
-
 	<footer class="footer">
 		<div class="container">
 			<div class="row">
@@ -220,7 +318,6 @@
 			</div>
 		</div>
 	</footer>
-
 </div>
 
 <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
@@ -229,7 +326,8 @@
 <script src="{% static 'plugins/Isotope/isotope.pkgd.min.js' %}"></script>
 <script src="{% static 'plugins/OwlCarousel2-2.2.1/owl.carousel.js' %}"></script>
 <script src="{% static 'plugins/easing/easing.js' %}"></script>
-<script src="{% static 'js/custom.js' %}"></script>
+<script src="{% static 'plugins/jquery-ui-1.12.1.custom/jquery-ui.js' %}"></script>
+<script src="{% static 'js/single_custom.js' %}"></script>
 </body>
 
 </html>

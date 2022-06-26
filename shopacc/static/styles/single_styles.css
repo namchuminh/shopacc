@@ -50,7 +50,6 @@ COLOR PALETTE
 }
 body
 {
-	font-family: 'Poppins', sans-serif;
 	font-size: 14px;
 	line-height: 23px;
 	font-weight: 400;
@@ -270,15 +269,15 @@ section
 {
 	width: 100%;
 	height: 50px;
-	background: #1e1e27;
+	background: #fe4c50;
 }
 .top_nav_left
 {
 	height: 50px;
-	line-height: 50px;
-	font-size: 13px;
-	color: #b5aec4;
-	text-transform: uppercase;
+    line-height: 50px;
+    font-size: 14px;
+    font-weight: 500;
+    color: white;
 }
 
 /*********************************
@@ -452,21 +451,21 @@ section
 .account
 {
 	display: inline-block;
-	position: relative;
-	min-width: 50px;
-	padding-left: 20px;
-	text-align: center;
-	vertical-align: middle;
-	background: #1e1e27;
+    position: relative;
+    min-width: 250px;
+    padding-left: 20px;
+    text-align: center;
+    vertical-align: middle;
+    background: #fd4c50;
 }
 .account > a
 {
 	display: block;
-	color: #b5aec4;
-	font-weight: 400;
-	height: 50px;
-	line-height: 50px;
-	font-size: 13px;
+    color: white;
+    font-weight: 500;
+    height: 50px;
+    line-height: 50px;
+    font-size: 15px;
 }
 .account > a > i
 {
@@ -500,7 +499,7 @@ section
 .account_selection li
 {
 	padding-left: 10px;
-	padding-right: 10px;
+	text-align: left;
 	line-height: 50px;
 }
 .account_selection li a
@@ -932,7 +931,6 @@ section
 .single_product_thumbnails ul li
 {
 	position: relative;
-	height: 136px;
 	margin-bottom: 30px;
 	cursor: pointer;
 }
@@ -969,13 +967,13 @@ section
 .single_product_image_background
 {
 	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-position: center center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
 }
 
 /*********************************
@@ -1027,8 +1025,7 @@ section
 	font-weight: 500;
 	color: #b9b4c7;
 	text-decoration: line-through;
-	line-height: 30px;
-	margin-top: 21px;
+	margin-top: -5px;
 }
 .product_price
 {
@@ -1036,8 +1033,6 @@ section
 	font-size: 24px;
 	color: #fe4c50;
 	font-weight: 500;
-	line-height: 30px;
-	margin-top: 2px;
 }
 .star_rating
 {
@@ -1056,7 +1051,7 @@ section
 }
 .product_color
 {
-	margin-top: 27px;
+	margin-top: 10px;
 }
 .product_color ul
 {
@@ -1076,7 +1071,8 @@ section
 {
 	width: 100%;
 	height: 40px;
-	margin-top: 23px;
+	margin-top: 10px;
+	justify-content: center;
 }
 .quantity_selector
 {
@@ -1391,7 +1387,7 @@ section
 
 .benefit
 {
-	margin-top: 74px;
+	margin-top: 30px;
 }
 .benefit_row
 {
