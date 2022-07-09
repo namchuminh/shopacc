@@ -1296,8 +1296,11 @@ section
 .product_slider_container
 {
 	width: 100%;
-	height: 340px;
+	height: 88%;
 	margin-top: 73px;
+	border: 1px solid #cccccc;
+	
+
 }
 .product_slider_container::after
 {
@@ -1677,7 +1680,6 @@ section
 	color: #fe4c50;
 }
 
-form {border: 1px solid #f1f1f1; height: 400px;}
 
 input[type=text], input[type=password] {
   width: 100%;

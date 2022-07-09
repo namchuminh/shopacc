@@ -2,6 +2,8 @@ from unittest import result
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from matplotlib.pyplot import get
+
+from home.utils import convertVND
 from .models import AccFifa
 from user.models import Profile
 from django.views import View
@@ -47,6 +49,22 @@ class detail(View):
             acc = AccFifa.objects.all().get(slug=slug)
             result = {'login' : False, 'acc':acc}
             return render(request,self.template_name,result)
+
+class pay(View):
+    template_name =  'home/pay.html'
+    def get(self, request, slug):
+        if request.user.is_authenticated:
+            user = User.objects.all().get(pk=request.user.id)
+            money = Profile.objects.all().get(user = user).money
+            acc = AccFifa.objects.all().get(slug=slug)
+            price = convertVND(acc.price)
+            result = {'login' : True, 'username': request.user.username, 'money': money, 'acc':acc, 'price': price}
+            return render(request,self.template_name,result)
+        else:
+            acc = AccFifa.objects.all().get(slug=slug)
+            result = {'login' : False, 'acc':acc}
+            return render(request,self.template_name,result)
+
         
 
 

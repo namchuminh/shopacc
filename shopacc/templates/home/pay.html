@@ -13,10 +13,8 @@
 <link rel="stylesheet" type="text/css" href="{% static 'plugins/OwlCarousel2-2.2.1/owl.carousel.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'plugins/OwlCarousel2-2.2.1/owl.theme.default.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'plugins/OwlCarousel2-2.2.1/animate.css' %}">
-<link rel="stylesheet" href="{% static 'plugins/themify-icons/themify-icons.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static 'plugins/jquery-ui-1.12.1.custom/jquery-ui.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static 'styles/single_styles.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static 'styles/single_responsive.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'styles/main_styles.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'styles/responsive.css' %}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 </head>
 
@@ -164,79 +162,67 @@
 		</div>
 	</div>
 
-	<div class="container single_product_container">
-		<div class="row">
-			<div class="col">
+        <div class="container" style="margin-top: 100px; margin-bottom: -40px;">
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="product_slider_container">
+                        <form method="post" style="height: 650px;">
+                        {% csrf_token %}
+                        <h2 style="text-decoration: underline;text-align: center;margin-bottom: -60px;margin-top: 30px;font-size: 30px;color: #fa4b4f;font-weight: bolder;">Thông Tin Thanh Toán</h2>
+                        <div class="container" style="margin-top:70px;">
+                            {% if error %}
+                                <p style="color: #fe4c50;text-align: center;height: 0px;font-size: larger;"> {{error}}</p>
+                            {% endif %}
+                            <label for="uname"><b>Tên Tài Khoản FO4</b></label>
+                            <input type="text" name="accname" value="{{acc.name}}" disabled>
+    
+							<label for="psw"><b>Mô Tả Tài Khoản FO4</b></label>
+                            <input type="text" name="accdescription" value="{{acc.description}}" disabled>
 
-				<!-- Breadcrumbs -->
+							<label for="psw"><b>Email Nhận Tài Khoản | <a href="{% url 'change-info' %}">Thay Đổi Email?</a></b></label>
+                            <input type="text" name="emailacc" value="{{user.email}}" disabled>
 
-				<div class="breadcrumbs d-flex flex-row align-items-center">
-					<ul>
-						<li><a href="{% url 'index' %}">Trang Chủ</a></li>
-						<li><a href="categories.html"><i class="fa fa-angle-right" aria-hidden="true"></i>Men's</a></li>
-						<li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>{{ acc.name }}</a></li>
-					</ul>
-				</div>
+                            <label for="psw"><b>Giá Tài Khoản FO4</b></label>
+                            <input type="text" name="accprice" value="{{price}} VNĐ" disabled>
+    
+                            <label for="psw"><b>Số Dư Hiện Có</b></label>
+                            <input type="text" name="accprice" value="{{money}} VNĐ" disabled>
+                                
+                            <button type="submit" style="font-size: larger;font-weight: bolder;">Thanh Toán Ngay</button>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+				<div class="col-md-5">
+                    <div class="product_slider_container">
+                        <form method="post" style="height: 550px; border: none;">
+                        {% csrf_token %}
+                        <h2 style="text-decoration: underline;text-align: center;margin-bottom: -60px;margin-top: 30px;font-size: 30px;color: #fa4b4f;font-weight: bolder;">Thông Tin Thanh Toán</h2>
+                        <div class="container" style="margin-top:70px;">
+                            {% if error %}
+                                <p style="color: #fe4c50;text-align: center;height: 0px;font-size: larger;"> {{error}}</p>
+                            {% endif %}
+                            <label for="uname"><b>Tên Tài Khoản FO4</b></label>
+                            <input type="text" name="accname" value="{{acc.name}}" disabled>
+    
+							<label for="psw"><b>Mô Tả Tài Khoản FO4</b></label>
+                            <input type="text" name="accdescription" value="{{acc.description}}" disabled>
 
-			</div>
-		</div>
+                            <label for="psw"><b>Giá Tài Khoản FO4</b></label>
+                            <input type="text" name="accprice" value="{{price}} VNĐ" disabled>
+    
+                            <label for="psw"><b>Số Dư Hiện Có</b></label>
+                            <input type="text" name="accprice" value="{{money}} VNĐ" disabled>
+                                
+                            <button type="submit" style="font-size: larger;font-weight: bolder;">Thanh Toán Ngay</button>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-		<div class="row" style="margin-top: -50px; margin-bottom: -60px;">
-			<div class="col-lg-12">
-                <div class="product_details" style="padding-bottom: 25px; margin-bottom: 25px; border-bottom: 1px solid #efefef;">
-					<div class="product_details_title">
-						<h2 style="color: #fe4c50; text-decoration: underline;">{{ acc.name }}</h2>
-						<p>{{ acc.description }}</p>
-					</div>
-					<div class="original_price">{{ acc.sale }} vnđ</div>
-					<div class="product_price">Giá: {{ acc.price }} vnđ</div>
-					<ul class="star_rating">
-						<li><i class="fa fa-star" aria-hidden="true"></i></li>
-						<li><i class="fa fa-star" aria-hidden="true"></i></li>
-						<li><i class="fa fa-star" aria-hidden="true"></i></li>
-						<li><i class="fa fa-star" aria-hidden="true"></i></li>
-						<li><i class="fa fa-star-o" aria-hidden="true"></i></li>
-					</ul>
-					<div class="product_color">
-						<span>Loại Tài Khoản: Dưới 500K</span>
-					</div>
-					<div class="quantity d-flex flex-column flex-sm-row align-items-sm-center">
-                        <span style="padding-left: 11px; padding-top: 8px; height: 42px; width: 100px; border: 1px solid #e5e5e5;">Số Lượng: 1</span>
-						<div class="red_button add_to_cart_button"><a href="{% url 'pay' slug=acc.slug %}">Mua Ngay</a></div>
-						<div class="product_favorite d-flex flex-column align-items-center justify-content-center"></div>
-					</div>
-				</div>
-				<div class="single_product_pics">
-					<div class="row">
-						<div class="col-lg-2 thumbnails_col order-lg-1 order-2" style="margin-top: 9px;">
-							<div class="single_product_thumbnails">
-								<ul>
-									<li><img src="{{ acc.image.url }}" alt="" data-image="{{ acc.image.url }}"></li>
-                                    {% if acc.image1 %}
-                                        <li class="active"><img src="{{ acc.image1.url }}" alt="" data-image="{{ acc.image1.url }}"></li>
-                                    {% endif %}
-									{% if acc.image2 %}
-                                        <li><img src="{{ acc.image2.url }}" alt="" data-image="{{ acc.image2.url }}"></li>
-                                    {% endif %}
-									{% if acc.image3 %}
-                                        <li><img src="{{ acc.image3.url }}" alt="" data-image="{{ acc.image3.url }}"></li>
-                                    {% endif %}
-								</ul>
-							</div>
-						</div>
-						<div class="col-lg-10 image_col order-lg-2 order-1">
-							<div class="single_product_image">
-								<div class="single_product_image_background" style="background-image:url({{ acc.image.url }})"></div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			
-		</div>
         
-	</div>
-
 	<!-- Tabs -->
 
 
