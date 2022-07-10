@@ -1,9 +1,7 @@
 from unittest import result
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
-from matplotlib.pyplot import get
-
-from home.utils import convertVND
+from home.utils import checkPay, convertVND
 from .models import AccFifa
 from user.models import Profile
 from django.views import View
@@ -58,12 +56,52 @@ class pay(View):
             money = Profile.objects.all().get(user = user).money
             acc = AccFifa.objects.all().get(slug=slug)
             price = convertVND(acc.price)
+            money = convertVND(money)
             result = {'login' : True, 'username': request.user.username, 'money': money, 'acc':acc, 'price': price}
             return render(request,self.template_name,result)
         else:
-            acc = AccFifa.objects.all().get(slug=slug)
-            result = {'login' : False, 'acc':acc}
-            return render(request,self.template_name,result)
+            return redirect('user-login')
+
+    def post(self, request,slug):
+        if request.user.is_authenticated:
+            if request.method == 'POST':
+                emailacc = request.POST["emailacc"]
+                acc = AccFifa.objects.all().get(slug=slug)
+                user = User.objects.all().get(pk=request.user.id)
+                money = Profile.objects.all().get(user = user).money
+                price = acc.price
+                newMoney = checkPay(price,money)
+                if (newMoney == False):
+                    user = User.objects.all().get(pk=request.user.id)
+                    money = Profile.objects.all().get(user = user).money
+                    acc = AccFifa.objects.all().get(slug=slug)
+                    price = convertVND(acc.price)
+                    money = convertVND(money)
+                    error = "Số dư không đủ, vui lòng nạp thêm tiền!"
+                    result = {'login' : True, 'username': request.user.username, 'money': money, 'acc':acc, 'price': price, 'error':error}
+                    return render(request,self.template_name,result)
+                else:
+                    user = User.objects.all().get(pk=request.user.id)
+                    money = Profile.objects.all().get(user = user).money
+                    acc = AccFifa.objects.all().get(slug=slug)
+                    price = convertVND(acc.price)
+                    newMoney = convertVND(newMoney)
+                    updateMoney = Profile.objects.all().get(user = user)
+                    updateMoney.money = newMoney
+                    updateMoney.save()
+                    error = "Mua tài khoản thành công, vui lòng kiểm tra email để nhận tài khoản!"
+                    result = {'login' : True, 'username': request.user.username, 'money': newMoney, 'acc':acc, 'price': price, 'error':error}
+                    return render(request,self.template_name,result)
+            else:
+                user = User.objects.all().get(pk=request.user.id)
+                money = Profile.objects.all().get(user = user).money
+                acc = AccFifa.objects.all().get(slug=slug)
+                price = convertVND(acc.price)
+                result = {'login' : True, 'username': request.user.username, 'money': money, 'acc':acc, 'price': price}
+                return render(request,self.template_name,result)
+        else:
+            return redirect('user-login')
+
 
         
 

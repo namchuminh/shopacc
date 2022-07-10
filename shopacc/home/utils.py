@@ -15,9 +15,9 @@ def convertVND(price):
     
     return price
 
-    
-
-
-price = convertVND(356.000)
-
-print(price)
+def checkPay(price, money):
+    money = money - price
+    if(money >= 0):
+        return money
+    else:
+        return False

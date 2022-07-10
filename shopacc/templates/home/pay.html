@@ -166,12 +166,12 @@
             <div class="row">
                 <div class="col-md-7">
                     <div class="product_slider_container">
-                        <form method="post" style="height: 650px;">
+                        <form method="post" style="height: 700px;">
                         {% csrf_token %}
                         <h2 style="text-decoration: underline;text-align: center;margin-bottom: -60px;margin-top: 30px;font-size: 30px;color: #fa4b4f;font-weight: bolder;">Thông Tin Thanh Toán</h2>
                         <div class="container" style="margin-top:70px;">
                             {% if error %}
-                                <p style="color: #fe4c50;text-align: center;height: 0px;font-size: larger;"> {{error}}</p>
+                                <p style="margin-bottom: 50px; color: #fe4c50;text-align: center;height: 0px;font-size: larger;"> {{error}}</p>
                             {% endif %}
                             <label for="uname"><b>Tên Tài Khoản FO4</b></label>
                             <input type="text" name="accname" value="{{acc.name}}" disabled>
@@ -180,7 +180,7 @@
                             <input type="text" name="accdescription" value="{{acc.description}}" disabled>
 
 							<label for="psw"><b>Email Nhận Tài Khoản | <a href="{% url 'change-info' %}">Thay Đổi Email?</a></b></label>
-                            <input type="text" name="emailacc" value="{{user.email}}" disabled>
+                            <input type="text" name="emailacc" value="{{user.email}}" >
 
                             <label for="psw"><b>Giá Tài Khoản FO4</b></label>
                             <input type="text" name="accprice" value="{{price}} VNĐ" disabled>
