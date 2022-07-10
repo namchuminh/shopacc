@@ -18,6 +18,8 @@ class AccFifa(models.Model):
     timeUpload = models.DateTimeField(default=datetime.now, blank=True) 
     product = models.BooleanField(default=True)
     slug = models.SlugField(unique=True, blank=True, null=True)
+    username = models.CharField(max_length=255, default="abc")
+    password = models.CharField(max_length=255, default="xyz")
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)

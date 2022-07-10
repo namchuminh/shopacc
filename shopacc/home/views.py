@@ -1,7 +1,7 @@
 from unittest import result
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
-from home.utils import checkPay, convertVND
+from home.utils import checkPay, convertVND, sendAcc
 from .models import AccFifa
 from user.models import Profile
 from django.views import View
@@ -31,6 +31,7 @@ class home(View):
             newacc = AccFifa.objects.all().filter(product=True).order_by('-id')[:11]
             user = User.objects.all().get(pk=request.user.id)
             money = Profile.objects.all().get(user = user).money
+            money = convertVND(money)
             result = {'allacc':allacc, 'newacc':newacc, 'username': request.user.username, 'money': money}
             return render(request,self.template_name, result)
 
@@ -40,6 +41,7 @@ class detail(View):
         if request.user.is_authenticated:
             user = User.objects.all().get(pk=request.user.id)
             money = Profile.objects.all().get(user = user).money
+            money = convertVND(money)
             acc = AccFifa.objects.all().get(slug=slug)
             result = {'login' : True, 'username': request.user.username, 'money': money, 'acc':acc}
             return render(request,self.template_name,result)
@@ -81,17 +83,28 @@ class pay(View):
                     result = {'login' : True, 'username': request.user.username, 'money': money, 'acc':acc, 'price': price, 'error':error}
                     return render(request,self.template_name,result)
                 else:
-                    user = User.objects.all().get(pk=request.user.id)
-                    money = Profile.objects.all().get(user = user).money
-                    acc = AccFifa.objects.all().get(slug=slug)
-                    price = convertVND(acc.price)
-                    newMoney = convertVND(newMoney)
-                    updateMoney = Profile.objects.all().get(user = user)
-                    updateMoney.money = newMoney
-                    updateMoney.save()
-                    error = "Mua tài khoản thành công, vui lòng kiểm tra email để nhận tài khoản!"
-                    result = {'login' : True, 'username': request.user.username, 'money': newMoney, 'acc':acc, 'price': price, 'error':error}
-                    return render(request,self.template_name,result)
+                    if(sendAcc(emailacc, acc.username, acc.password) == True):
+                        user = User.objects.all().get(pk=request.user.id)
+                        money = Profile.objects.all().get(user = user).money
+                        acc = AccFifa.objects.all().get(slug=slug)
+                        price = convertVND(acc.price)
+                        updateMoney = Profile.objects.all().get(user = user)
+                        updateMoney.money = newMoney
+                        updateMoney.save()
+                        newMoney = convertVND(newMoney)
+                        error = "Mua tài khoản thành công, vui lòng kiểm tra email để nhận tài khoản!"
+                        result = {'login' : True, 'username': request.user.username, 'money': newMoney, 'acc':acc, 'price': price, 'error':error}
+                        return render(request,self.template_name,result)
+                    else:
+                        user = User.objects.all().get(pk=request.user.id)
+                        money = Profile.objects.all().get(user = user).money
+                        acc = AccFifa.objects.all().get(slug=slug)
+                        price = convertVND(acc.price)
+                        money = convertVND(money)
+                        error = "Vui lòng nhập vào email hợp lệ! Ví dụ: nguyenvana@gmail.com!"
+                        result = {'login' : True, 'username': request.user.username, 'money': money, 'acc':acc, 'price': price, 'error':error}
+                        return render(request,self.template_name,result)
+
             else:
                 user = User.objects.all().get(pk=request.user.id)
                 money = Profile.objects.all().get(user = user).money

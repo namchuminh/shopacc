@@ -7,6 +7,7 @@ from django.views import View
 from home.models import AccFifa
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from home.utils import convertVND
 from user.models import Profile
 from .utils import checkemail, checkpassword, checkusername
 
@@ -59,6 +60,7 @@ class Userchangeinfo(View):
             newacc = AccFifa.objects.all().filter(product=True).order_by('-id')[:11]
             user = User.objects.all().get(pk=request.user.id)
             money = Profile.objects.all().get(user = user).money
+            money = convertVND(money)
             result = {'username': user.username,'email': user.email, 'money': money}
             return render(request,self.template_name,result)
     def post(self, request, *args, **kwargs):
