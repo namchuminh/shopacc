@@ -96,7 +96,7 @@
                                     <li class="checkout">
                                         <a href="#">
                                             <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                            <span id="checkout_items" class="checkout_items">2</span>
+                                            <span id="checkout_items" class="checkout_items">0</span>
                                         </a>
                                     </li>
                                 {% endif %}        
@@ -188,8 +188,8 @@
 						<h2 style="color: #fe4c50; text-decoration: underline;">{{ acc.name }}</h2>
 						<p>{{ acc.description }}</p>
 					</div>
-					<div class="original_price">{{ acc.sale }} vnđ</div>
-					<div class="product_price">Giá: {{ acc.price }} vnđ</div>
+					<div class="original_price" style="margin-bottom: 10px;">{{ sale }} vnđ</div>
+					<div class="product_price">Giá: {{ price }} vnđ</div>
 					<ul class="star_rating">
 						<li><i class="fa fa-star" aria-hidden="true"></i></li>
 						<li><i class="fa fa-star" aria-hidden="true"></i></li>
@@ -203,7 +203,7 @@
 					<div class="quantity d-flex flex-column flex-sm-row align-items-sm-center">
                         <span style="padding-left: 11px; padding-top: 8px; height: 42px; width: 100px; border: 1px solid #e5e5e5;">Số Lượng: 1</span>
 						<div class="red_button add_to_cart_button"><a href="{% url 'pay' slug=acc.slug %}">Mua Ngay</a></div>
-						<div class="product_favorite d-flex flex-column align-items-center justify-content-center"></div>
+						<div class="red_button add_to_cart_button" style="background-color: aqua; color: black;"><a href="#" style="color: #353535">Thêm Vào Giỏ Hàng</a></div>
 					</div>
 				</div>
 				<div class="single_product_pics">

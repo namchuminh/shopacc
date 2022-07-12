@@ -26,7 +26,7 @@ Fo4Shop.com - Trang Chủ
         <li class="checkout">
             <a href="#">
                 <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                <span id="checkout_items" class="checkout_items">2</span>
+                <span id="checkout_items" class="checkout_items">0</span>
             </a>
         </li>
     </ul>
@@ -52,34 +52,15 @@ Fo4Shop.com - Trang Chủ
 <div class="banner">
     <div class="container">
         <div class="row">
-            <div class="col-md-3">
-                <div class="banner_item align-items-center" style="background-image:url(/static/images/banner_1.jpg)">
-                    <div class="banner_category">
-                        <a href="categories.html">GIÁ 100K -> 500K</a>
+            {% for item in category%}
+                <div class="col-md-3">
+                    <div class="banner_item align-items-center" style="background-image:url(/static/images/banner_1.jpg)">
+                        <div class="banner_category">
+                            <a href="#">{{ item.name }}</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="banner_item align-items-center" style="background-image:url(/static/images/banner_2.jpg)">
-                    <div class="banner_category">
-                        <a href="categories.html">GIÁ 500K -> 1000K</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="banner_item align-items-center" style="background-image:url(/static/images/banner_3.jpg)">
-                    <div class="banner_category">
-                        <a href="categories.html">GIÁ 1000K -> 5000K</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="banner_item align-items-center" style="background-image:url(/static/images/banner_4.jpg)">
-                    <div class="banner_category">
-                        <a href="categories.html">GIÁ TRÊN 5000K</a>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
         </div>
     </div>
 </div>
@@ -112,7 +93,7 @@ Fo4Shop.com - Trang Chủ
                                     </div>
                                     <div class="product_info">
                                         <a href="{% url 'detail' slug=item.slug %}"><h6 class="product_name">{{ item.name }}</h6></a>
-                                        <div class="product_price">{{ item.price }}<span>{{ item.sale }}</span></div>
+                                        <div class="product_price">{{ item.price }} vnd<span>{{ item.sale }}</span></div>
                                     </div>
                                 </div>
                             </div>

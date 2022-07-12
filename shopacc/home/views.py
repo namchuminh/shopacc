@@ -1,8 +1,8 @@
 from unittest import result
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
-from home.utils import checkPay, convertVND, sendAcc
-from .models import AccFifa
+from home.utils import checkPay, convertPrice, convertVND, sendAcc
+from .models import AccCategory, AccFifa
 from user.models import Profile
 from django.views import View
 from django.contrib.auth.models import User
@@ -17,8 +17,11 @@ class index(View):
             return redirect('home')
         else:    
             allacc = AccFifa.objects.all().filter(product=True)
-            newacc = AccFifa.objects.all().filter(product=True).order_by('-id')[:11] 
-            result = {'allacc':allacc, 'newacc':newacc}
+            newacc = AccFifa.objects.all().filter(product=True).order_by('-id')[:11]
+            category = AccCategory.objects.all()
+            allacc = convertPrice(allacc)
+            newacc = convertPrice(newacc) 
+            result = {'allacc':allacc, 'newacc':newacc, 'category':category}
             return render(request,self.template_name, result)
 
 class home(View):
@@ -29,10 +32,13 @@ class home(View):
         else:
             allacc = AccFifa.objects.all().filter(product=True)
             newacc = AccFifa.objects.all().filter(product=True).order_by('-id')[:11]
+            category = AccCategory.objects.all()
+            allacc = convertPrice(allacc)
+            newacc = convertPrice(newacc)
             user = User.objects.all().get(pk=request.user.id)
             money = Profile.objects.all().get(user = user).money
             money = convertVND(money)
-            result = {'allacc':allacc, 'newacc':newacc, 'username': request.user.username, 'money': money}
+            result = {'allacc':allacc, 'newacc':newacc, 'username': request.user.username, 'money': money, 'category':category}
             return render(request,self.template_name, result)
 
 class detail(View):
@@ -43,7 +49,9 @@ class detail(View):
             money = Profile.objects.all().get(user = user).money
             money = convertVND(money)
             acc = AccFifa.objects.all().get(slug=slug)
-            result = {'login' : True, 'username': request.user.username, 'money': money, 'acc':acc}
+            price = convertVND(acc.price)
+            sale = convertVND(acc.sale)
+            result = {'login' : True, 'username': request.user.username, 'money': money, 'acc':acc, 'price': price, 'sale':sale}
             return render(request,self.template_name,result)
         else:
             acc = AccFifa.objects.all().get(slug=slug)

@@ -38,5 +38,10 @@ def sendAcc(emailacc, username, password):
     except:
         return False
 
+def convertPrice(acc):
+    for i in range(len(acc)):
+        acc[i].price = convertVND(acc[i].price)
+        acc[i].sale = convertVND(acc[i].sale)
+    return acc
 
 

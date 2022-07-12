@@ -4,6 +4,17 @@ from django.contrib.auth.models import User
 from django.utils.text import slugify 
 
 
+class AccCategory(models.Model):
+    name = models.CharField(max_length=255)
+    slug = models.SlugField(unique=True, blank=True, null=True)
+    description = models.TextField()
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(AccCategory, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
 # Create your models here.
 
 class AccFifa(models.Model):
@@ -20,13 +31,17 @@ class AccFifa(models.Model):
     slug = models.SlugField(unique=True, blank=True, null=True)
     username = models.CharField(max_length=255, default="abc")
     password = models.CharField(max_length=255, default="xyz")
-
+    category = models.ForeignKey(AccCategory, on_delete=models.CASCADE, blank=True, null=True)
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super(AccFifa, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name
+
+
+
+
 
 
 
