@@ -42,7 +42,7 @@ Fo4Shop.com - Mua Acc Fifa Online 4 Giá Rẻ, Uy Tín!
                 <div class="col-md-3">
                     <div class="banner_item align-items-center" style="background-image:url(/static/images/banner_1.jpg)">
                         <div class="banner_category">
-                            <a href="#">{{ item.name }}</a>
+                            <a href="{% url 'category' slug=item.slug %}">{{ item.name }}</a>
                         </div>
                     </div>
                 </div>

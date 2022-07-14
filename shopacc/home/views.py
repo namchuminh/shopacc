@@ -1,4 +1,5 @@
 from unittest import result
+from urllib import request
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from home.utils import checkPay, convertPrice, convertVND, sendAcc
@@ -123,6 +124,10 @@ class pay(View):
         else:
             return redirect('user-login')
 
+class category(View):
+    template_name =  'home/category.html'
+    def get(self, request, slug):
+        return render(request, self.template_name)
 
         
 

@@ -87,11 +87,11 @@
 								<li><a href="{% url 'index' %}"><i class="fa-solid fa-house-chimney"></i> Trang Chủ</a></li>
 								<li><a href="#"><i class="fa-solid fa-address-card"></i> Liên Hệ</a></li>
 								<li><a href="#"><i class="fa-solid fa-money-bill-1"></i> Nạp Tiền</a></li>
+								{% if user.is_superuser %}
+                                    <li><a href="{% url 'admin:index' %}"><i class="fa-solid fa-user-check"></i> Admin</a></li>
+                                {% endif %}
 							</ul>
                             <ul class="navbar_user">
-                                {% if user.is_superuser %}
-                                    <li><a href="#"><i class="fa-solid fa-plus"></i></a></li>
-                                {% endif %}
                                 {% if login == True %}
                                     <li class="checkout">
                                         <a href="#">
