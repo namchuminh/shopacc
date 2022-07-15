@@ -173,7 +173,7 @@
 				<div class="breadcrumbs d-flex flex-row align-items-center">
 					<ul>
 						<li><a href="{% url 'index' %}">Trang Chủ</a></li>
-						<li><a href="categories.html"><i class="fa fa-angle-right" aria-hidden="true"></i>Men's</a></li>
+						<li><a href="{% url 'category' slug=cate.slug %}"><i class="fa fa-angle-right" aria-hidden="true"></i>{{ cate.name }}'s</a></li>
 						<li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>{{ acc.name }}</a></li>
 					</ul>
 				</div>

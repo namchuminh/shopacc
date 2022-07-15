@@ -3,7 +3,7 @@ from urllib import request
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from home.utils import checkPay, convertPrice, convertVND, sendAcc
-from .models import AccCategory, AccFifa
+from .models import AccCategory, AccFifa, AccCategory
 from user.models import Profile
 from django.views import View
 from django.contrib.auth.models import User
@@ -52,7 +52,8 @@ class detail(View):
             acc = AccFifa.objects.all().get(slug=slug)
             price = convertVND(acc.price)
             sale = convertVND(acc.sale)
-            result = {'login' : True, 'username': request.user.username, 'money': money, 'acc':acc, 'price': price, 'sale':sale}
+            cate = AccCategory.objects.all().get(accfifa = acc)
+            result = {'login' : True, 'username': request.user.username, 'money': money, 'acc':acc, 'price': price, 'sale':sale, 'cate':cate}
             return render(request,self.template_name,result)
         else:
             acc = AccFifa.objects.all().get(slug=slug)
@@ -127,7 +128,20 @@ class pay(View):
 class category(View):
     template_name =  'home/category.html'
     def get(self, request, slug):
-        return render(request, self.template_name)
+        if request.user.is_authenticated:
+            user = User.objects.all().get(pk=request.user.id)
+            money = Profile.objects.all().get(user = user).money
+            allCate = AccCategory.objects.all()
+            cate = AccCategory.objects.all().get(slug=slug)
+            acc = AccFifa.objects.all().filter(category=cate)
+            acc = convertPrice(acc)
+            money = convertVND(money)
+            result = {'login' : True, 'username': request.user.username, 'money': money,'acc':acc, 'cate':cate, 'allCate':allCate }
+            return render(request,self.template_name,result)
+        else:
+            category = AccCategory.objects.all().get(slug=slug)
+            result = {'login' : False, 'username': request.user.username}
+            return render(request,self.template_name,result)
 
         
 

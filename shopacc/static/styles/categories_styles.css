@@ -269,15 +269,15 @@ section
 {
 	width: 100%;
 	height: 50px;
-	background: #1e1e27;
+	background: #fe4c50;
 }
 .top_nav_left
 {
 	height: 50px;
-	line-height: 50px;
-	font-size: 13px;
-	color: #b5aec4;
-	text-transform: uppercase;
+    line-height: 50px;
+    font-size: 14px;
+    font-weight: 500;
+    color: white;
 }
 
 /*********************************
@@ -452,20 +452,20 @@ section
 {
 	display: inline-block;
 	position: relative;
-	min-width: 50px;
+	min-width: 250px;
 	padding-left: 20px;
 	text-align: center;
 	vertical-align: middle;
-	background: #1e1e27;
+	background: #fd4c50;
 }
 .account > a
 {
 	display: block;
-	color: #b5aec4;
-	font-weight: 400;
+	color: white;
+	font-weight: 500;
 	height: 50px;
 	line-height: 50px;
-	font-size: 13px;
+	font-size: 15px;
 }
 .account > a > i
 {
@@ -540,10 +540,10 @@ section
 .navbar
 {
 	width: auto;
-	height: 100px;
-	float: right;
-	padding-left: 0px;
-	padding-right: 0px;
+    height: 100px;
+    float: right;
+    padding-left: 0px;
+    padding-right: 0px;
 }
 .navbar_menu li
 {
@@ -552,16 +552,16 @@ section
 .navbar_menu li a
 {
 	display: block;
-	color: #1e1e27;
-	font-size: 13px;
-	font-weight: 500;
-	text-transform: uppercase;
-	padding: 20px;
-	-webkit-transition: color 0.3s ease;
-	-moz-transition: color 0.3s ease;
-	-ms-transition: color 0.3s ease;
-	-o-transition: color 0.3s ease;
-	transition: color 0.3s ease;
+    color: #1e1e27;
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+    padding: 20px;
+    -webkit-transition: color 0.3s ease;
+    -moz-transition: color 0.3s ease;
+    -ms-transition: color 0.3s ease;
+    -o-transition: color 0.3s ease;
+    transition: color 0.3s ease;
 }
 .navbar_menu li a:hover
 {
