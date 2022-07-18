@@ -96,7 +96,7 @@
                                     <li class="checkout">
                                         <a href="#">
                                             <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                            <span id="checkout_items" class="checkout_items">0</span>
+                                            <span id="checkout_items" class="checkout_items">{{ cart.number }}</span>
                                         </a>
                                     </li>
                                 {% endif %}        
@@ -173,7 +173,7 @@
 				<div class="breadcrumbs d-flex flex-row align-items-center">
 					<ul>
 						<li><a href="{% url 'index' %}">Trang Chủ</a></li>
-						<li><a href="{% url 'category' slug=cate.slug %}"><i class="fa fa-angle-right" aria-hidden="true"></i>{{ cate.name }}'s</a></li>
+						<li><a href="{% url 'category' slug=cate.slug %}"><i class="fa fa-angle-right" aria-hidden="true"></i>{{ cate.name }}</a></li>
 						<li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>{{ acc.name }}</a></li>
 					</ul>
 				</div>
@@ -198,12 +198,12 @@
 						<li><i class="fa fa-star-o" aria-hidden="true"></i></li>
 					</ul>
 					<div class="product_color">
-						<span>Loại Tài Khoản: Dưới 500K</span>
+						<span>Loại Tài Khoản: {{ cate.name }}</span>
 					</div>
 					<div class="quantity d-flex flex-column flex-sm-row align-items-sm-center">
                         <span style="padding-left: 11px; padding-top: 8px; height: 42px; width: 100px; border: 1px solid #e5e5e5;">Số Lượng: 1</span>
 						<div class="red_button add_to_cart_button"><a href="{% url 'pay' slug=acc.slug %}">Mua Ngay</a></div>
-						<div class="red_button add_to_cart_button" style="background-color: aqua; color: black;"><a href="#" style="color: #353535">Thêm Vào Giỏ Hàng</a></div>
+						<div id="addCart" class="red_button add_to_cart_button" style="background-color: aqua; color: black;"><a href="#" style="color: #353535">Thêm Vào Giỏ Hàng</a></div>
 					</div>
 				</div>
 				<div class="single_product_pics">
@@ -328,6 +328,7 @@
 <script src="{% static 'plugins/easing/easing.js' %}"></script>
 <script src="{% static 'plugins/jquery-ui-1.12.1.custom/jquery-ui.js' %}"></script>
 <script src="{% static 'js/single_custom.js' %}"></script>
+<script src="{% static 'js/ajax.js' %}"></script>
 </body>
 
 </html>
