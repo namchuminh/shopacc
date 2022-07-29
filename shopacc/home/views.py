@@ -4,7 +4,7 @@ from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from home.utils import checkPay, convertPrice, convertVND, sendAcc
 from .models import AccCategory, AccFifa, AccCategory
-from user.models import Profile, Cart
+from user.models import Profile, ShopCart
 from django.views import View
 from django.contrib.auth.models import User
 
@@ -37,10 +37,10 @@ class home(View):
             allacc = convertPrice(allacc)
             newacc = convertPrice(newacc)
             user = User.objects.all().get(pk=request.user.id)
-            cart = Cart.objects.all().get(user = user)
+            cartNumber = ShopCart.objects.all().filter(user = user).count()
             money = Profile.objects.all().get(user = user).money
             money = convertVND(money)
-            result = {'allacc':allacc, 'newacc':newacc, 'username': request.user.username, 'money': money, 'category':category, 'cart':cart}
+            result = {'allacc':allacc, 'newacc':newacc, 'username': request.user.username, 'money': money, 'category':category, 'cartNumber':cartNumber}
             return render(request,self.template_name, result)
 
 class detail(View):
@@ -48,14 +48,14 @@ class detail(View):
     def get(self, request, slug):
         if request.user.is_authenticated:
             user = User.objects.all().get(pk=request.user.id)
-            cart = Cart.objects.all().get(user = user)
+            cartNumber = ShopCart.objects.all().filter(user = user).count()
             money = Profile.objects.all().get(user = user).money
             money = convertVND(money)
             acc = AccFifa.objects.all().get(slug=slug)
             price = convertVND(acc.price)
             sale = convertVND(acc.sale)
             cate = AccCategory.objects.all().get(accfifa = acc)
-            result = {'login' : True, 'username': request.user.username, 'money': money, 'acc':acc, 'price': price, 'sale':sale, 'cate':cate, 'cart':cart}
+            result = {'login' : True, 'username': request.user.username, 'money': money, 'acc':acc, 'price': price, 'sale':sale, 'cate':cate, 'cartNumber':cartNumber}
             return render(request,self.template_name,result)
         else:
             acc = AccFifa.objects.all().get(slug=slug)
@@ -67,12 +67,12 @@ class pay(View):
     def get(self, request, slug):
         if request.user.is_authenticated:
             user = User.objects.all().get(pk=request.user.id)
-            cart = Cart.objects.all().get(user = user)
+            cartNumber = ShopCart.objects.all().filter(user = user).count()
             money = Profile.objects.all().get(user = user).money
             acc = AccFifa.objects.all().get(slug=slug)
             price = convertVND(acc.price)
             money = convertVND(money)
-            result = {'login' : True, 'username': request.user.username, 'money': money, 'acc':acc, 'price': price, 'cart':cart}
+            result = {'login' : True, 'username': request.user.username, 'money': money, 'acc':acc, 'price': price, 'cartNumber':cartNumber}
             return render(request,self.template_name,result)
         else:
             return redirect('user-login')
@@ -133,14 +133,14 @@ class category(View):
     def get(self, request, slug):
         if request.user.is_authenticated:
             user = User.objects.all().get(pk=request.user.id)
-            cart = Cart.objects.all().get(user = user)
+            cartNumber = ShopCart.objects.all().filter(user = user).count()
             money = Profile.objects.all().get(user = user).money
             allCate = AccCategory.objects.all()
             cate = AccCategory.objects.all().get(slug=slug)
             acc = AccFifa.objects.all().filter(category=cate)
             acc = convertPrice(acc)
             money = convertVND(money)
-            result = {'login' : True, 'username': request.user.username, 'money': money,'acc':acc, 'cate':cate, 'allCate':allCate, 'cart':cart }
+            result = {'login' : True, 'username': request.user.username, 'money': money,'acc':acc, 'cate':cate, 'allCate':allCate, 'cartNumber':cartNumber}
             return render(request,self.template_name,result)
         else:
             category = AccCategory.objects.all().get(slug=slug)

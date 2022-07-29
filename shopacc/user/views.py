@@ -1,4 +1,5 @@
-from ast import ExceptHandler
+from ast import ExceptHandler, Return
+import json
 from unittest import result
 from django.conf import settings
 from django.http import HttpResponse
@@ -9,7 +10,7 @@ from home.models import AccFifa
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from home.utils import convertVND
-from user.models import Profile, Cart
+from user.models import Profile, ShopCart
 from .utils import checkemail, checkpassword, checkusername
 from django.http import JsonResponse
 
@@ -59,12 +60,12 @@ class Userchangeinfo(View):
             return redirect('index')
         else:
             user = User.objects.all().get(username=request.user.username)
-            cart = Cart.objects.all().get(user = user)
+            cartNumber = ShopCart.objects.all().filter(user = user).count()
             newacc = AccFifa.objects.all().filter(product=True).order_by('-id')[:11]
             user = User.objects.all().get(pk=request.user.id)
             money = Profile.objects.all().get(user = user).money
             money = convertVND(money)
-            result = {'username': user.username,'email': user.email, 'money': money, 'cart':cart }
+            result = {'username': user.username,'email': user.email, 'money': money, 'cartNumber':cartNumber }
             return render(request,self.template_name,result)
     def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
@@ -138,16 +139,11 @@ class Usersigup(View):
 
 
 class Ajax(View):
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            user = User.objects.all().get(id=request.user.id)
-            cart = Cart.objects.all().get(user = user)
-            data = { 
-                'username' : cart.user.username,
-                'number' : cart.number,
-                'product' : cart.product,
-                'addCart' : cart.addCart
+            accname = request.POST['accname']
+            data = {
+                'accname':accname,
+                'error':False
             }
             return JsonResponse(data)
-        else:
-            return JsonResponse(False)

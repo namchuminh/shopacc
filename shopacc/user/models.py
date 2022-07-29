@@ -11,15 +11,11 @@ class Profile(models.Model):
    def __str__(self):
        return self.user.username
 
-class Cart(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+class ShopCart(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, unique=False)
     number = models.IntegerField(default=0)
     product = models.ForeignKey(AccFifa, on_delete=models.CASCADE, blank= True, null= True)
-    slug = models.SlugField(unique=True, blank=True, null=True)
     addCart = models.BooleanField(default=False)
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.user.username)
-        super(Cart, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.user.username
