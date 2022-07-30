@@ -96,7 +96,7 @@
                                     <li class="checkout">
                                         <a href="#">
                                             <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                            <span id="checkout_items" class="checkout_items">{{ cart.number }}</span>
+                                            <span id="checkout_items" class="checkout_items">{{ cart }}</span>
                                         </a>
                                     </li>
                                 {% endif %}        
@@ -185,7 +185,7 @@
 			<div class="col-lg-12">
                 <div class="product_details" style="padding-bottom: 25px; margin-bottom: 25px; border-bottom: 1px solid #efefef;">
 					<div class="product_details_title">
-						<h2 style="color: #fe4c50; text-decoration: underline;">{{ acc.name }}</h2>
+						<h2 id="accname" style="color: #fe4c50; text-decoration: underline;">{{ acc.name }}</h2>
 						<p>{{ acc.description }}</p>
 					</div>
 					<div class="original_price" style="margin-bottom: 10px;">{{ sale }} vnđ</div>
@@ -203,7 +203,10 @@
 					<div class="quantity d-flex flex-column flex-sm-row align-items-sm-center">
                         <span style="padding-left: 11px; padding-top: 8px; height: 42px; width: 100px; border: 1px solid #e5e5e5;">Số Lượng: 1</span>
 						<div class="red_button add_to_cart_button"><a href="{% url 'pay' slug=acc.slug %}">Mua Ngay</a></div>
-						<div id="addCart" class="red_button add_to_cart_button" style="background-color: aqua; color: black;"><a href="#" style="color: #353535">Thêm Vào Giỏ Hàng</a></div>
+						{% csrf_token %}
+						{% if login == True %}
+							<div id="addCart" class="red_button add_to_cart_button" style="background-color: aqua; color: black;"><a href="#" style="color: #353535">Thêm Vào Giỏ Hàng</a></div>
+						{% endif %}
 					</div>
 				</div>
 				<div class="single_product_pics">

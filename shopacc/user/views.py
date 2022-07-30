@@ -9,7 +9,7 @@ from home.models import AccFifa
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from home.utils import convertVND
-from user.models import Profile, Cart
+from user.models import Profile, ShopCart
 from .utils import checkemail, checkpassword, checkusername
 from django.http import JsonResponse
 
@@ -59,7 +59,7 @@ class Userchangeinfo(View):
             return redirect('index')
         else:
             user = User.objects.all().get(username=request.user.username)
-            cart = Cart.objects.all().get(user = user)
+            cart = ShopCart.objects.all().filter(user = user).count()
             newacc = AccFifa.objects.all().filter(product=True).order_by('-id')[:11]
             user = User.objects.all().get(pk=request.user.id)
             money = Profile.objects.all().get(user = user).money
@@ -138,16 +138,23 @@ class Usersigup(View):
 
 
 class Ajax(View):
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            user = User.objects.all().get(id=request.user.id)
-            cart = Cart.objects.all().get(user = user)
-            data = { 
-                'username' : cart.user.username,
-                'number' : cart.number,
-                'product' : cart.product,
-                'addCart' : cart.addCart
-            }
-            return JsonResponse(data)
+            try:
+                accname = request.POST['accname']
+                acc = AccFifa.objects.all().get(name = accname)
+                user = User.objects.all().get(username=request.user.username)
+                cart = ShopCart.objects.all().filter(user = user)
+                for item in cart:
+                    if(item.product == acc and item.addCart == True):
+                        return HttpResponse("isset")
+                newCart = ShopCart()
+                newCart.user = user
+                newCart.product = acc
+                newCart.addCart = True
+                newCart.save()
+                return HttpResponse("True")
+            except:
+                return HttpResponse("False")
         else:
-            return JsonResponse(False)
+            return HttpResponse("False")
