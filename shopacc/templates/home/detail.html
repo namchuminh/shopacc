@@ -96,7 +96,7 @@
                                     <li class="checkout">
                                         <a href="#">
                                             <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                            <span id="checkout_items" class="checkout_items">{{ cartNumber }}</span>
+                                            <span id="checkout_items" class="checkout_items">{{ cart.number }}</span>
                                         </a>
                                     </li>
                                 {% endif %}        
@@ -185,7 +185,7 @@
 			<div class="col-lg-12">
                 <div class="product_details" style="padding-bottom: 25px; margin-bottom: 25px; border-bottom: 1px solid #efefef;">
 					<div class="product_details_title">
-						<h2 class="accname" style="color: #fe4c50; text-decoration: underline;">{{ acc.name }}</h2>
+						<h2 style="color: #fe4c50; text-decoration: underline;">{{ acc.name }}</h2>
 						<p>{{ acc.description }}</p>
 					</div>
 					<div class="original_price" style="margin-bottom: 10px;">{{ sale }} vnđ</div>
