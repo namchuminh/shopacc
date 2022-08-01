@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title%}
+Fo4Shop.com - Thông Tin Tài Khoản
+{% endblock title %}
+{% block user%}
+    <ul class="top_nav_menu">
+        <li class="account">
+            <a href="#">
+                <i class="fa-solid fa-user"></i> {{ username }} <i class="fa fa-angle-down"></i>
+            </a>
+            <ul class="account_selection">
+                <li><a href="#"><i class="fa-solid fa-money-bill-1"></i> Số Dư: {{ money }} vnđ</a></li>
+                <li><a href="{% url 'change-info' %}"><i class="fa-solid fa-key"></i> Thông Tin Tài Khoản</a></li>
+                <li><a href="{% url 'user-logout' %}"><i class="fa-solid fa-arrow-right-from-bracket"></i> Đăng Xuất</a></li>
+            </ul>
+        </li>
+    </ul>
+{% endblock user%}
+
+{% block addshop %}
+    <ul class="navbar_user">
+        {% if user.is_superuser %}
+            <li><a href="#"><i class="fa-solid fa-plus"></i></a></li>
+        {% endif %}
+        <li class="checkout">
+            <a href="#">
+                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                <span id="checkout_items" class="checkout_items">{{ cart }}</span>
+            </a>
+        </li>
+    </ul>
+{% endblock addshop%}
+
+{% block login-sigup %}
+<div class="container" style="margin-top: 100px; margin-bottom: -40px;">
+        <div class="row">
+            <div class="col">
+                <div class="product_slider_container" style="border:none; height:auto;">
+                    <div>
+                        <div class="divTable div-hover">
+                                <div class="rowTable text-white" style="background-color: #fe4c50; font-weight: bold; line-height: 40px; height: 50px;">
+                                    <div class="divTableCol">Tài Khoản</div>
+                                    <div class="divTableCol">Trạng Thái</div>
+                                    <div class="divTableCol">Giá Gốc</div>
+                                    <div class="divTableCol">Giá Bán</div>
+                                    <div class="divTableCol">Hành Động</div>
+                                </div>
+                            
+                                {% for item in cartDetail %}
+                                    <div class="rowTable" id="{{item.product.id }}">
+                                        <div class="divTableCol">
+                                            <div class="media" style="max-width: 350px; min-width:350px; margin-left: -10px;">
+                                                <a class="thumbnail pull-left mr-2" href="#">
+                                                    <img class="media-object" src='{{ item.product.image.url }}' style="width: 100px; height: 70px;" />
+                                                </a>
+                                                <div class="media-body" >
+                                                    <h4 class="media-heading" style="font-size: 15px;"><a href="#">{{ item.product.name }}</a></h4>
+                                                    <span class="text-success" style="font-size: 12px;font-weight: 500;"><strong style="color: #2a2a2a;
+                                                        font-weight: 400;">{{ item.product.description }}</strong></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="divTableCol">
+                                            {% if item.product.product == True %}
+                                                <strong class="label label-success">
+                                                    Còn Hàng
+                                                </strong>
+                                            {% else %}
+                                                <strong style="color: red;" class="label label-success">
+                                                    Hết Hàng
+                                                </strong>
+                                            {% endif %}
+                                        </div>
+                                        <div class="divTableCol"><strong style="color: #a2a2a2;text-decoration: line-through;">{{ item.product.sale }} vnđ</strong></div>
+                                        <div class="divTableCol"><strong>{{ item.product.price }} vnđ</strong></div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <a href="{% url 'pay' slug=item.product.slug %}" class="btn btn-danger" style="border: none;
+                                                background: #fe4c50;">Thanh Toán</a>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <a value="{{item.product.id}}" class="btn btn-danger deleteProduct" style="border: none;
+                                                background: #ff00e0; color: white; cursor: pointer;">Xóa</a>
+                                            </div>
+                                            
+                                        </div>
+                                    </div> 
+                                {% endfor %}
+                                
+                        </div>
+                    </div>
+                    <div style="margin-top: 50px;">
+                        {% csrf_token %}
+                        <div style="border-bottom: 1px solid #eeeeee; font-size: 15px; line-height: 45px;">
+                            <span>Số Lượng: <strong id="number-product">{{ cart }}</strong> - Tài Khoản</span>
+                        </div>
+                        <div style="border-bottom: 1px solid #eeeeee; font-size: 20px; margin-top: 10px; margin-bottom: 10px; line-height: 45px;">
+                            <span>Tổng Tiền: <strong id="total-product">{{ total }}</strong> vnđ</span>
+                        </div>
+                        
+                        <div style="margin-top: 15px;">
+                            <button class="btn btn-primary" style="background: #fe4c50;
+                            border: none; font-weight: 500;">Thanh Toán Tất Cả</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock login-sigup%}

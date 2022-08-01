@@ -5,12 +5,13 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.shortcuts import render
 from django.views import View
+from numpy import product
 from home.models import AccFifa
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from home.utils import convertVND
 from user.models import Profile, ShopCart
-from .utils import checkemail, checkpassword, checkusername
+from .utils import checkemail, checkpassword, checkusername, convertProductVND, totalPrice
 from django.http import JsonResponse
 
 
@@ -136,25 +137,57 @@ class Usersigup(View):
                     result = {'error': 'Tài khoản hoặc email đã tồn tại! Vui lòng đăng nhập!'}
                     return render(request,self.template_name, result)
 
-
 class Ajax(View):
     def post(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            try:
-                accname = request.POST['accname']
-                acc = AccFifa.objects.all().get(name = accname)
-                user = User.objects.all().get(username=request.user.username)
-                cart = ShopCart.objects.all().filter(user = user)
-                for item in cart:
-                    if(item.product == acc and item.addCart == True):
-                        return HttpResponse("isset")
-                newCart = ShopCart()
-                newCart.user = user
-                newCart.product = acc
-                newCart.addCart = True
-                newCart.save()
-                return HttpResponse("True")
-            except:
-                return HttpResponse("False")
+            #Ajax add product to cart
+            if 'accname' in request.POST:
+                try:
+                    accname = request.POST['accname']
+                    acc = AccFifa.objects.all().get(name = accname)
+                    user = User.objects.all().get(username=request.user.username)
+                    cart = ShopCart.objects.all().filter(user = user)
+                    for item in cart:
+                        if(item.product == acc and item.addCart == True):
+                            return HttpResponse("isset")
+                    newCart = ShopCart()
+                    newCart.user = user
+                    newCart.product = acc
+                    newCart.addCart = True
+                    newCart.save()
+                    return HttpResponse("True")
+                except:
+                    return HttpResponse("False")
+            #Ajax delete acc from cart
+            if 'id' in request.POST:
+                try:
+                    id = request.POST['id']
+                    acc = AccFifa.objects.all().get(id = id)
+                    user = User.objects.all().get(username=request.user.username)
+                    cart = ShopCart.objects.all().filter(user = user, product = acc)
+                    cart.delete()
+                    cartDetail = ShopCart.objects.all().filter(user = user)
+                    total = totalPrice(cartDetail)
+                    return HttpResponse(total)
+                except:
+                    return HttpResponse("False")
         else:
             return HttpResponse("False")
+
+class Cartuser(View):
+    template_name =  'user/cart.html'
+
+    def get(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('index')
+        else:
+            user = User.objects.all().get(username=request.user.username)
+            cart = ShopCart.objects.all().filter(user = user).count()
+            cartDetail = ShopCart.objects.all().filter(user = user)
+            total = totalPrice(cartDetail)
+            cartDetail = convertProductVND(cartDetail)
+            user = User.objects.all().get(pk=request.user.id)
+            money = Profile.objects.all().get(user = user).money
+            money = convertVND(money)
+            result = {'username': user.username,'money': money, 'cart':cart, 'cartDetail':cartDetail, 'total':total}
+            return render(request,self.template_name,result)
