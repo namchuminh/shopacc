@@ -28,8 +28,9 @@ def convertProductVND(cartDetail):
         cartDetail[i].product.sale = convertVND(cartDetail[i].product.sale)
     return cartDetail
 
-def totalPrice(cartDetail):
+def totalPrice(cartDetailTotal):
     total = 0
-    for i in range(len(cartDetail)):
-        total += cartDetail[i].product.price
+    for i in range(len(cartDetailTotal)):
+        if(cartDetailTotal[i].product.product == True):
+            total += cartDetailTotal[i].product.price
     return convertVND(total)

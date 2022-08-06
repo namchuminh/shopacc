@@ -45,3 +45,15 @@ def convertPrice(acc):
     return acc
 
 
+def sendMess(email, fullname, mess):
+    try:
+        subject = 'Fo4Shop.com - Tin nhắn khách hàng!'
+        message = 'Khách hàng: ' + fullname + '\nEmail: ' + email + '\nTin nhắn: ' + mess
+        email_from = settings.EMAIL_HOST_USER
+        recipient_list = ['chuminhnamma@gmail.com',]
+        if (send_mail(subject, message, 'Fo4Shop.Com ' + email_from, recipient_list, fail_silently=False)):
+            return True
+        else:
+            return False
+    except:
+        return False

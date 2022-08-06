@@ -24,7 +24,7 @@ Fo4Shop.com - Thông Tin Tài Khoản
             <li><a href="#"><i class="fa-solid fa-plus"></i></a></li>
         {% endif %}
         <li class="checkout">
-            <a href="#">
+            <a href="{% url 'user-cart' %}">
                 <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                 <span id="checkout_items" class="checkout_items">{{ cart }}</span>
             </a>

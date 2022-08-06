@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% block title%}
-Fo4Shop.com - Thông Tin Tài Khoản
+Fo4Shop.com - Giỏ hàng
 {% endblock title %}
 {% block user%}
     <ul class="top_nav_menu">
@@ -24,7 +24,7 @@ Fo4Shop.com - Thông Tin Tài Khoản
             <li><a href="#"><i class="fa-solid fa-plus"></i></a></li>
         {% endif %}
         <li class="checkout">
-            <a href="#">
+            <a href="{% url 'user-cart' %}">
                 <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                 <span id="checkout_items" class="checkout_items">{{ cart }}</span>
             </a>
@@ -55,9 +55,16 @@ Fo4Shop.com - Thông Tin Tài Khoản
                                                     <img class="media-object" src='{{ item.product.image.url }}' style="width: 100px; height: 70px;" />
                                                 </a>
                                                 <div class="media-body" >
-                                                    <h4 class="media-heading" style="font-size: 15px;"><a href="#">{{ item.product.name }}</a></h4>
-                                                    <span class="text-success" style="font-size: 12px;font-weight: 500;"><strong style="color: #2a2a2a;
+                                                    {% if item.product.product == True %}
+                                                        <h4 class="media-heading" style="font-size: 15px;"><a href="{% url 'detail' slug=item.product.slug %}">{{ item.product.name }}</a></h4>
+                                                        <span class="text-success" style="font-size: 12px;font-weight: 500;"><strong style="color: #2a2a2a;
+                                                            font-weight: 400;">{{ item.product.description }}</strong></span>
+                                                    {% else %}
+                                                        <h4 class="media-heading" style="font-size: 15px;"><a style="color: #a2a2a2;">{{ item.product.name }}</a></h4>
+                                                        <span class="text-success" style="font-size: 12px;font-weight: 500;"><strong style="color: #a2a2a2;
                                                         font-weight: 400;">{{ item.product.description }}</strong></span>
+                                                    {% endif %}
+                                                    
                                                 </div>
                                             </div>
                                         </div>
@@ -73,11 +80,21 @@ Fo4Shop.com - Thông Tin Tài Khoản
                                             {% endif %}
                                         </div>
                                         <div class="divTableCol"><strong style="color: #a2a2a2;text-decoration: line-through;">{{ item.product.sale }} vnđ</strong></div>
-                                        <div class="divTableCol"><strong>{{ item.product.price }} vnđ</strong></div>
+                                        {% if item.product.product == True %}
+                                            <div class="divTableCol"><strong>{{ item.product.price }} vnđ</strong></div>
+                                        {% else %}
+                                        <div class="divTableCol"><strong style="text-decoration: line-through; color: #a2a2a2;">{{ item.product.price }} vnđ</strong></div>
+                                        {% endif %}
+                                        
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <a href="{% url 'pay' slug=item.product.slug %}" class="btn btn-danger" style="border: none;
-                                                background: #fe4c50;">Thanh Toán</a>
+                                                {% if item.product.product == True %}
+                                                    <a href="{% url 'pay' slug=item.product.slug %}" class="btn btn-danger" style="border: none;
+                                                    background: #fe4c50;">Thanh Toán</a>
+                                                {% else %}
+                                                    <div class="btn btn-danger" style="cursor: not-allowed; border: none; background: #d9d2d2;">Thanh Toán</div>
+                                                {% endif %}
+                                                
                                             </div>
                                             <div class="col-md-6">
                                                 <a value="{{item.product.id}}" class="btn btn-danger deleteProduct" style="border: none;

@@ -83,7 +83,7 @@
 						<nav class="navbar">
 							<ul class="navbar_menu">
 								<li><a href="{% url 'index' %}"><i class="fa-solid fa-house-chimney"></i> Trang Chủ</a></li>
-								<li><a href="#"><i class="fa-solid fa-address-card"></i> Liên Hệ</a></li>
+								<li><a href="{% url 'contact' %}"><i class="fa-solid fa-address-card"></i> Liên Hệ</a></li>
 								<li><a href="#"><i class="fa-solid fa-money-bill-1"></i> Nạp Tiền</a></li>
 								{% if user.is_superuser %}
 									<li><a href="{% url 'admin:index' %}"><i class="fa-solid fa-user-check"></i> Admin</a></li>
@@ -92,7 +92,7 @@
                             <ul class="navbar_user">
                                 {% if login == True %}
                                     <li class="checkout">
-                                        <a href="#">
+                                        <a href="{% url 'user-cart' %}">
                                             <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                                             <span id="checkout_items" class="checkout_items">{{ cart }}</span>
                                         </a>
@@ -164,7 +164,7 @@
 
         <div class="container" style="margin-top: 100px; margin-bottom: -40px;">
             <div class="row">
-                <div class="col-md-7">
+                <div class="col">
                     <div class="product_slider_container">
                         <form method="post" style="height: 700px;">
                         {% csrf_token %}
@@ -181,32 +181,6 @@
 
 							<label for="psw"><b>Email Nhận Tài Khoản | <a href="{% url 'change-info' %}">Thay Đổi Email?</a></b></label>
                             <input type="text" name="emailacc" value="{{user.email}}" >
-
-                            <label for="psw"><b>Giá Tài Khoản FO4</b></label>
-                            <input type="text" name="accprice" value="{{price}} VNĐ" disabled>
-    
-                            <label for="psw"><b>Số Dư Hiện Có</b></label>
-                            <input type="text" name="accprice" value="{{money}} VNĐ" disabled>
-                                
-                            <button type="submit" style="font-size: larger;font-weight: bolder;">Thanh Toán Ngay</button>
-                        </div>
-                        </form>
-                    </div>
-                </div>
-				<div class="col-md-5">
-                    <div class="product_slider_container">
-                        <form method="post" style="height: 550px; border: none;">
-                        {% csrf_token %}
-                        <h2 style="text-decoration: underline;text-align: center;margin-bottom: -60px;margin-top: 30px;font-size: 30px;color: #fa4b4f;font-weight: bolder;">Thông Tin Thanh Toán</h2>
-                        <div class="container" style="margin-top:70px;">
-                            {% if error %}
-                                <p style="color: #fe4c50;text-align: center;height: 0px;font-size: larger;"> {{error}}</p>
-                            {% endif %}
-                            <label for="uname"><b>Tên Tài Khoản FO4</b></label>
-                            <input type="text" name="accname" value="{{acc.name}}" disabled>
-    
-							<label for="psw"><b>Mô Tả Tài Khoản FO4</b></label>
-                            <input type="text" name="accdescription" value="{{acc.description}}" disabled>
 
                             <label for="psw"><b>Giá Tài Khoản FO4</b></label>
                             <input type="text" name="accprice" value="{{price}} VNĐ" disabled>

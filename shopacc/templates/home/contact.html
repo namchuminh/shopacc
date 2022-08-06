@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title%}
+Fo4Shop.com - Liên hệ với chúng tôi
+{% endblock title %}
+{% block user%}
+    {% if login == True %}
+    <ul class="top_nav_menu">
+        <li class="account">
+            <a href="#">
+                <i class="fa-solid fa-user"></i> {{ username }} <i class="fa fa-angle-down"></i>
+            </a>
+            <ul class="account_selection">
+                <li><a href="#"><i class="fa-solid fa-money-bill-1"></i> Số Dư: {{ money }} vnđ</a></li>
+                <li><a href="{% url 'change-info' %}"><i class="fa-solid fa-key"></i> Thông Tin Tài Khoản</a></li>
+                <li><a href="{% url 'user-logout' %}"><i class="fa-solid fa-arrow-right-from-bracket"></i> Đăng Xuất</a></li>
+            </ul>
+        </li>
+    </ul>
+    {% else %}
+    <ul class="top_nav_menu">
+        <li class="account">
+            <a href="#">
+                Tài Khoản Cá Nhân
+                <i class="fa fa-angle-down"></i>
+            </a>
+            <ul class="account_selection">
+                <li><a href="{% url 'user-login' %}"><i class="fa fa-sign-in" aria-hidden="true"></i>Đăng Nhập</a></li>
+                <li><a href="{% url 'user-sigup' %}"><i class="fa fa-user-plus" aria-hidden="true"></i>Đăng Ký</a></li>
+            </ul>
+        </li>
+    </ul>
+    {% endif %}
+{% endblock user%}
+
+{% block addshop %}
+    <ul class="navbar_user">
+        {% if user.is_superuser %}
+            <li><a href="#"><i class="fa-solid fa-plus"></i></a></li>
+        {% endif %}
+        {% if user.is_authenticated %}
+        <li class="checkout">
+            <a href="{% url 'user-cart' %}">
+                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                <span id="checkout_items" class="checkout_items">{{ cart }}</span>
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+{% endblock addshop%}
+
+{% block login-sigup %}
+<div class="container" style="margin-top: 100px; margin-bottom: -40px;">
+        <div class="row">
+            <div class="col">
+                <div class="product_slider_container" style="border: none;">
+                    <div class="contact container">
+                        <form method="POST">
+                            <div class="form">
+                                <div class="form-txt">
+                                    <h1>Liên Hệ Với Chúng Tôi</h1>
+                                    <span>Mọi vấn đề hoặc thắc mắc của khách hàng có thể để lại liên hệ thông qua Form liên hệ bên. Chúng tôi sẽ cố gắng trả lời email của bạn trong thời gian sớm nhất có thể!</span>
+                                    <h3 style="color: rgb(252 75 79);">Thông tin cơ bản</h3>
+                                    <p>Họ tên: Chu Minh Nam</p>
+                                    <p>Chức vụ: Admin</p>
+                                    <p>Số điện thoại: 0379962045</p>
+                                    <p>Email: chuminhnamma@gmail.com</p>
+                                    <h3 style="color: rgb(252 75 79);">Kết nối qua mạng xã hội</h3>
+                                    <p>Facebook</p>
+                                    <p>Message</p>
+                                </div>
+                                <div class="form-details">
+                                    <h2 style="text-align: center; font-size: 12px; line-height: 0px; font-weight: 400; color: #777777;">{{ error }}</h2>
+                                    {% csrf_token %}
+                                    <input type="text" name="fullname" id="email" placeholder="Email của bạn" required>
+                                    <input type="text" name="email" id="name" placeholder="Họ tên" required>
+                                    <textarea name="mess" id="message" cols="52" rows="7" placeholder="Tin nhắn liên hệ..." required></textarea>
+                                    <button>Gửi Tin Nhắn</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>            
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock login-sigup%}

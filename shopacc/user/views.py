@@ -6,13 +6,15 @@ from django.shortcuts import redirect
 from django.shortcuts import render
 from django.views import View
 from numpy import product
-from home.models import AccFifa
+from pandas import Categorical
+from home.models import AccFifa, AccCategory
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from home.utils import convertVND
 from user.models import Profile, ShopCart
 from .utils import checkemail, checkpassword, checkusername, convertProductVND, totalPrice
 from django.http import JsonResponse
+from django.core import serializers
 
 
 
@@ -184,7 +186,8 @@ class Cartuser(View):
             user = User.objects.all().get(username=request.user.username)
             cart = ShopCart.objects.all().filter(user = user).count()
             cartDetail = ShopCart.objects.all().filter(user = user)
-            total = totalPrice(cartDetail)
+            cartDetailTotal = ShopCart.objects.all().filter(user = user)
+            total = totalPrice(cartDetailTotal)
             cartDetail = convertProductVND(cartDetail)
             user = User.objects.all().get(pk=request.user.id)
             money = Profile.objects.all().get(user = user).money

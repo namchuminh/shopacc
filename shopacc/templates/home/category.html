@@ -86,7 +86,7 @@
 						<nav class="navbar">
 							<ul class="navbar_menu">
 								<li><a href="{% url 'index' %}"><i class="fa-solid fa-house-chimney"></i> Trang Chủ</a></li>
-								<li><a href="#"><i class="fa-solid fa-address-card"></i> Liên Hệ</a></li>
+								<li><a href="{% url 'contact' %}"><i class="fa-solid fa-address-card"></i> Liên Hệ</a></li>
 								<li><a href="#"><i class="fa-solid fa-money-bill-1"></i> Nạp Tiền</a></li>
 								{% if user.is_superuser %}
 									<li><a href="{% url 'admin:index' %}"><i class="fa-solid fa-user-check"></i> Admin</a></li>
@@ -95,7 +95,7 @@
                             <ul class="navbar_user">
                                 {% if login == True %}
                                     <li class="checkout">
-                                        <a href="#">
+                                        <a href="{% url 'user-cart' %}">
                                             <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                                             <span id="checkout_items" class="checkout_items">{{cart}}</span>
                                         </a>
@@ -188,7 +188,7 @@
 						<ul class="sidebar_categories">
 							{% for item in allCate %}
 								{% if item.slug == cate.slug %}
-									<li class="active"><a href="{% url 'category' slug=item.slug %}"><span><i class="fa fa-angle-double-right" aria-hidden="true"></i></span>{{ item.name }}</a></li>
+									<li class="active"><a href="{% url 'category' slug=item.slug %}"><span><i class="fa fa-angle-double-right" aria-hidden="true"></i></span><span class="sortCate">{{ item.name }}</span></a></li>
 								{% else %}
 									<li ><a href="{% url 'category' slug=item.slug %}">{{ item.name }}</a></li>
 								{% endif %}	
@@ -212,12 +212,13 @@
 								<div class="product_sorting_container product_sorting_container_top">
 									<ul class="product_sorting">
 										<li>
-											<span class="type_sorting_text">Default Sorting</span>
+											<span class="type_sorting_text">Sắp Xếp Mặc Định</span>
 											<i class="fa fa-angle-down"></i>
+											{% csrf_token %}
 											<ul class="sorting_type">
-												<li class="type_sorting_btn" data-isotope-option="{ &quot;sortBy&quot;: &quot;original-order&quot; }"><span>Default Sorting</span></li>
-												<li class="type_sorting_btn" data-isotope-option="{ &quot;sortBy&quot;: &quot;price&quot; }"><span>Price</span></li>
-												<li class="type_sorting_btn" data-isotope-option="{ &quot;sortBy&quot;: &quot;name&quot; }"><span>Product Name</span></li>
+												<li class="type_sorting_btn"><span class="sort_tang">Theo Giá Tăng Dần</span></li>
+												
+												<li class="type_sorting_btn"><span class="sort_giam">Theo Giá Giảm Dần</span></li>
 											</ul>
 										</li>
 										<li>
@@ -373,6 +374,7 @@
 <script src="{% static 'plugins/easing/easing.js' %}"></script>
 <script src="{% static 'plugins/jquery-ui-1.12.1.custom/jquery-ui.js' %}"></script>
 <script src="{% static 'js/categories_custom.js' %}"></script>
+<script src="{% static 'js/ajax.js' %}"></script>
 </body>
 
 </html>
