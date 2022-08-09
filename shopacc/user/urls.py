@@ -1,10 +1,11 @@
 from django.urls import path
-from .views import Userlogin, Userlogout, Userchangeinfo, Usersigup, Ajax, Cartuser
+from .views import Userlogin, Userlogout, Userchangeinfo, Usersigup, Ajax, Cartuser, Loadmoney
 urlpatterns = [
     path("dang-nhap/", Userlogin.as_view(), name='user-login'),
     path("dang-ky/", Usersigup.as_view(), name='user-sigup'),
     path("dang-xuat/", Userlogout.as_view(), name='user-logout'),
     path("tai-khoan/", Userchangeinfo.as_view(), name='change-info'),
     path("ajax/", Ajax.as_view(), name='ajax'),
-    path("gio-hang/", Cartuser.as_view(), name='user-cart')
+    path("gio-hang/", Cartuser.as_view(), name='user-cart'),
+    path("nap-tien/", Loadmoney.as_view(), name='load-cart')
 ]

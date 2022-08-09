@@ -1298,7 +1298,6 @@ section
 .product-grid
 {
 	width: 100%;
-	margin-top: 57px;
 }
 .product-item
 {
@@ -1715,4 +1714,8 @@ section
 .footer_social ul li a:hover
 {
 	color: #fe4c50;
+}
+
+input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+	color: white;
 }

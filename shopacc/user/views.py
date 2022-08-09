@@ -1,10 +1,13 @@
 from ast import ExceptHandler
+import decimal
+from distutils.log import error
 from unittest import result
 from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.shortcuts import render
 from django.views import View
+from matplotlib.pyplot import get
 from numpy import product
 from pandas import Categorical
 from home.models import AccFifa, AccCategory
@@ -12,7 +15,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from home.utils import convertVND
 from user.models import Profile, ShopCart
-from .utils import checkemail, checkpassword, checkusername, convertProductVND, totalPrice
+from .utils import checkCard, checkemail, checkpassword, checkusername, convertProductVND, totalPrice
 from django.http import JsonResponse
 from django.core import serializers
 
@@ -194,3 +197,50 @@ class Cartuser(View):
             money = convertVND(money)
             result = {'username': user.username,'money': money, 'cart':cart, 'cartDetail':cartDetail, 'total':total}
             return render(request,self.template_name,result)
+
+class Loadmoney(View):
+    template_name =  'user/loadmoney.html'
+
+    def get(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('user-login')
+        else:
+            user = User.objects.all().get(username=request.user.username)
+            cart = ShopCart.objects.all().filter(user = user).count()
+            money = Profile.objects.all().get(user = user).money
+            money = convertVND(money)
+            result = {'username': user.username,'money': money, 'cart':cart}
+            return render(request,self.template_name,result)
+
+    def post(self, request):
+        if not request.user.is_authenticated:
+            return HttpResponse('Bạn không có quyền truy cập trang này!')
+        else:
+            if request.method == 'POST':
+                typecard = request.POST['type']
+                seri = request.POST['seri']
+                code = request.POST['code']
+                if(seri == "123456789" and code == "987654321"):
+                    user = User.objects.all().get(username=request.user.username)
+                    profile = Profile.objects.all().get(user = user)
+                    profile.money += decimal.Decimal('5000.000')
+                    profile.save()
+                    cart = ShopCart.objects.all().filter(user = user).count()
+                    money = Profile.objects.all().get(user = user).money
+                    money = convertVND(money)
+                    error = 'Nạp thành công! Tài khoản vừa nạp thêm 5.000.000 vnđ!'
+                    result = {'username': user.username,'money': money, 'cart':cart, 'error':error}
+                    return render(request,self.template_name,result)
+                else:
+                    user = User.objects.all().get(username=request.user.username)
+                    cart = ShopCart.objects.all().filter(user = user).count()
+                    money = Profile.objects.all().get(user = user).money
+                    money = convertVND(money)
+                    error = 'Sai mã thẻ cào hoặc seri, vui lòng kiểm tra lại!'
+                    result = {'username': user.username,'money': money, 'cart':cart, 'error':error}
+                    return render(request,self.template_name,result)
+                
+            else:
+                return redirect('index')
+
+    

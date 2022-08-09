@@ -172,7 +172,7 @@
 				<!-- Breadcrumbs -->
 
 				<div class="breadcrumbs d-flex flex-row align-items-center">
-					<ul>
+					<ul style="width: 100%;">
 						<li><a href="{% url 'home' %}">Trang Chủ</a></li>
 						<li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>{{ cate.name }}</a></li>
 					</ul>
@@ -206,73 +206,29 @@
 					<div class="products_iso">
 						<div class="row">
 							<div class="col">
-
-								<!-- Product Sorting -->
-
-								<div class="product_sorting_container product_sorting_container_top">
-									<ul class="product_sorting">
-										<li>
-											<span class="type_sorting_text">Sắp Xếp Mặc Định</span>
-											<i class="fa fa-angle-down"></i>
-											{% csrf_token %}
-											<ul class="sorting_type">
-												<li class="type_sorting_btn"><span class="sort_tang">Theo Giá Tăng Dần</span></li>
-												
-												<li class="type_sorting_btn"><span class="sort_giam">Theo Giá Giảm Dần</span></li>
-											</ul>
-										</li>
-										<li>
-											<span>Show</span>
-											<span class="num_sorting_text">6</span>
-											<i class="fa fa-angle-down"></i>
-											<ul class="sorting_num">
-												<li class="num_sorting_btn"><span>6</span></li>
-												<li class="num_sorting_btn"><span>12</span></li>
-												<li class="num_sorting_btn"><span>24</span></li>
-											</ul>
-										</li>
-									</ul>
-									<div class="pages d-flex flex-row align-items-center">
-										<div class="page_current">
-											<span>1</span>
-											<ul class="page_selection">
-												<li><a href="#">1</a></li>
-												<li><a href="#">2</a></li>
-												<li><a href="#">3</a></li>
-											</ul>
-										</div>
-										<div class="page_total"><span>of</span> 3</div>
-										<div id="next_page" class="page_next"><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a></div>
-									</div>
-
-								</div>
-
-								<!-- Product Grid -->
-
 								<div class="product-grid" style="position: relative; height: auto;">
 									{% for item in acc%}
-										<div class="product-item men">
-											<div class="product discount product_filter">
-												<div class="product_image">
-													<img src="{{ item.image.url }}" alt="">
+										{% if item.product == True %}
+											<div class="product-item men">
+												<div class="product discount product_filter">
+													<div class="product_image">
+														<img src="{{ item.image.url }}" alt="">
+													</div>
+													<div class="favorite favorite_left"></div>
+													<div class="product_info">
+														<h6 class="product_name" style="color: #666666;font-size: 15px;font-weight: normal;">{{ item.description }}</h6>
+													</div>
+													<div class="product_info">
+														<h6 class="product_name"><a href="{% url 'detail' slug=item.slug %}">{{ item.name }}</a></h6>
+														<div class="product_price">{{item.price}} vnd<span>{{ item.sale }} vnd</span></div>
+													</div>
 												</div>
-												<div class="favorite favorite_left"></div>
-												<div class="product_info">
-													<h6 class="product_name" style="color: #666666;font-size: 15px;font-weight: normal;">{{ item.description }}</h6>
-												</div>
-												<div class="product_info">
-													<h6 class="product_name"><a href="{% url 'detail' slug=item.slug %}">{{ item.name }}</a></h6>
-													<div class="product_price">{{item.price}} vnd<span>{{ item.sale }} vnd</span></div>
-												</div>
+												<div class="red_button add_to_cart_button"><a href="{% url 'detail' slug=item.slug %}">Mua Ngay</a></div>
 											</div>
-											<div class="red_button add_to_cart_button"><a href="{% url 'detail' slug=item.slug %}">Mua Ngay</a></div>
-										</div>
+										{% endif %}
 									{% endfor%}     
 
 								<!-- Product Sorting -->
-
-								
-
 							</div>
 						</div>
 					</div>

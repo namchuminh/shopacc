@@ -34,3 +34,22 @@ def totalPrice(cartDetailTotal):
         if(cartDetailTotal[i].product.product == True):
             total += cartDetailTotal[i].product.price
     return convertVND(total)
+
+
+def checkCard(type,seri,code):
+    if(type == "" ):
+        return "Vui lòng chọn loại thẻ!"
+    if(type != "viettel" or type != "mobifone" or type != "vinaphone"):
+        return "Vui lòng chỉ chọn loại thẻ là: Viettel hoặc Mobifone hoặc VinaPhone!"
+    if(seri == ""):
+        return "Vui lòng nhập vào seri thẻ!"
+    else:
+        if(re.match(r'^([\s\d]+)$', seri) == False):
+            return "Vui lòng nhập lại seri thẻ!"
+    
+    if(code == ""):
+        return "Vui lòng nhập vào mã thẻ!"
+    else:
+        if(re.match(r'^([\s\d]+)$', code) == False):
+            return "Vui lòng nhập lại mã thẻ!"
+    return True
